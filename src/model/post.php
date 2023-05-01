@@ -2,12 +2,6 @@
 declare(strict_types=1);
 namespace App\Model;
 
-// require_once('src/lib/database.php');
-// require_once('src/model/traits/idTrait.php');
-// require_once('src/model/traits/titleTrait.php');
-// require_once('src/model/traits/contentTrait.php');
-// require_once('src/model/traits/createdAtTrait.php');
-
 use App\Model\Traits\contentTrait;
 use App\Model\Traits\createdAtTrait;
 use App\Model\Traits\idTrait;

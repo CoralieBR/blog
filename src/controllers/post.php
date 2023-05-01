@@ -2,16 +2,6 @@
 
 namespace App\Controllers;
 
-// require_once('src/lib/database.php');
-// require_once('src/model/comment.php');
-// require_once('src/model/post.php');
-
-// spl_autoload_register(function($fqcn){
-// 	$path = str_replace(['App', '\\'], ['src', '/'], $fqcn) . '.php';
-// 	var_dump($path);
-// 	require $path;
-// });
-
 use App\Lib\Database;
 use App\Model\CommentRepository;
 use App\Model\PostRepository;

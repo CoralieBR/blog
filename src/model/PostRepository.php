@@ -2,8 +2,6 @@
 declare(strict_types=1);
 namespace App\Model;
 
-// require_once('src/lib/database.php');
-
 use App\Lib\Database;
 use App\Model\Post;
 

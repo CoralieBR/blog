@@ -2,8 +2,6 @@
 declare(strict_types=1);
 namespace App\Model;
 
-// require_once('src/lib/database.php');
-
 use App\Model\Traits\contentTrait;
 use App\Model\Traits\createdAtTrait;
 use App\Model\Traits\idTrait;

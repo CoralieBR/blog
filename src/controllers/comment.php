@@ -2,9 +2,6 @@
 
 namespace App\Controllers;
 
-// require_once('src/lib/database.php');
-// require_once('src/model/comment.php');
-
 use App\Lib\Database;
 use App\Model\CommentRepository;
 
