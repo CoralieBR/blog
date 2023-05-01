@@ -1,8 +1,8 @@
 <?php
 
-namespace Application\Lib\Database;
+namespace App\Lib;
 
-class DatabaseConnection
+class Database
 {
     public ?\PDO $database = null;
     

@@ -1,24 +1,69 @@
 <?php
 declare(strict_types=1);
-namespace Application\Model\Post;
+namespace App\Model;
 
 require_once('src/lib/database.php');
+require_once('src/model/traits/idTrait.php');
+require_once('src/model/traits/titleTrait.php');
+require_once('src/model/traits/contentTrait.php');
+require_once('src/model/traits/createdAtTrait.php');
 
-use Application\Lib\Database\DatabaseConnection;
+use App\Lib\Database;
+use App\Model\Traits\contentTrait;
+use App\Model\Traits\createdAtTrait;
+use App\Model\Traits\idTrait;
+use App\Model\Traits\titleTrait;
 
 class Post
 {
-    public int $id;
-    public string $title;
-    public string $introduction;
-    public string $content;
-    public $createdAt;
-    public $updatedAt;
+	use idTrait;
+	use titleTrait;
+	use contentTrait;
+	use createdAtTrait;
+    private string $introduction;
+    private $updatedAt;
+	private int $author;
+
+	public function getIntroduction()
+	{
+		return $this->introduction;
+	}
+
+	public function setIntroduction($introduction)
+	{
+		$this->introduction = $introduction;
+
+		return $this;
+	}
+
+	public function getUpdatedAt()
+	{
+		return $this->updatedAt;
+	}
+
+	public function setUpdatedAt($updatedAt)
+	{
+		$this->updatedAt = $updatedAt;
+
+		return $this;
+	}
+
+	public function getAuthor()
+	{
+		return $this->author;
+	}
+
+	public function setAuthor($author)
+	{
+		$this->author = $author;
+
+		return $this;
+	}
 }
 
 class PostRepository
 {
-    public DatabaseConnection $connection;
+    public Database $connection;
 
     public function getPost(int $id): Post
     {
@@ -27,9 +72,9 @@ class PostRepository
 
         $row = $statement->fetch();
         $post = new Post();
-        $post->id = $row['id'];
-        $post->title = $row['title'];
-        $post->content = $row['content'];
+        $post->setId($row['id']);
+        $post->setTitle($row['title']);
+        $post->setContent($row['content']);
 
         return $post;
     }
@@ -41,9 +86,9 @@ class PostRepository
         $posts = [];
         while (($row = $statement->fetch())) {
             $post = new Post();
-            $post->id = $row['id'];
-            $post->title = $row['title'];
-            $post->content = $row['content'];
+            $post->setId($row['id']);
+            $post->setTitle($row['title']);
+            $post->setContent($row['content']);
     
             $posts[] = $post;
         }

@@ -1,18 +1,18 @@
 <?php
 
-namespace Application\Controllers\Comment;
+namespace App\Controllers;
 
 require_once('src/lib/database.php');
 require_once('src/model/comment.php');
 
-use Application\Lib\Database\DatabaseConnection;
-use Application\Model\Comment\CommentRepository;
+use App\Lib\Database;
+use App\Model\CommentRepository;
 
 class Comment
 {
     public function execute(int $id)
     {
-        $connection = new DatabaseConnection();
+        $connection = new Database();
 
         $commentRepository = new CommentRepository();
         $commentRepository->connection = $connection;

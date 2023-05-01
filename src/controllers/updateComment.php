@@ -1,19 +1,19 @@
 <?php
 
-namespace Application\Controllers\UpdateComment;
+namespace App\Controllers;
 
 require_once('src/lib/database.php');
 require_once('src/model/comment.php');
 
-use Application\Lib\Database\DatabaseConnection;
-use Application\Model\Comment\CommentRepository;
+use App\Lib\Database;
+use App\Model\CommentRepository;
 
 class UpdateComment
 {
 	public function execute(int $commentId, array $input)
 	{
 		$commentRepository = new CommentRepository();
-		$commentRepository->connection = new DatabaseConnection();
+		$commentRepository->connection = new Database();
 
 		$comment = $commentRepository->getComment($commentId);
 

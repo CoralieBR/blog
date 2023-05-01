@@ -1,16 +1,15 @@
 <?php
 
-require_once('src/controllers/add_comment.php');
-require_once('src/controllers/homepage.php');
-require_once('src/controllers/post.php');
-require_once('src/controllers/comment.php');
-require_once('src/controllers/update_comment.php');
+spl_autoload_register(function($fqcn){
+	$path = str_replace(['App', '\\'], ['src', '/'], $fqcn) . '.php';
+	require $path;
+});
 
-use Application\Controllers\AddComment\AddComment;
-use Application\Controllers\UpdateComment\UpdateComment;
-use Application\Controllers\Homepage\Homepage;
-use Application\Controllers\Post\Post;
-use Application\Controllers\Comment\Comment;
+use App\Controllers\AddComment;
+use App\Controllers\UpdateComment;
+use App\Controllers\Homepage;
+use App\Controllers\Post;
+use App\Controllers\Comment;
 
 try {
 	if (isset($_GET['action']) && $_GET['action'] !== '') {

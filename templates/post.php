@@ -7,17 +7,17 @@
 
 <div class="news">
     <h3>
-        <?= htmlspecialchars($post->title) ?>
+        <?= htmlspecialchars($post->getTitle()) ?>
     </h3>
 
     <p>
-        <?= nl2br(htmlspecialchars($post->content)) ?>
+        <?= nl2br(htmlspecialchars($post->getContent())) ?>
     </p>
 </div>
 
 <h2>Commentaires</h2>
 
-<form action="index.php?action=addComment&id=<?= $post->id ?>" method="post">
+<form action="index.php?action=addComment&id=<?= $post->getId() ?>" method="post">
    <div>
   	<label for="title">Titre</label><br />
   	<input type="text" id="title" name="title" />
@@ -37,7 +37,6 @@ foreach ($comments as $comment) {
 ?>
 	<p><strong><?= htmlspecialchars($comment->getTitle()) ?></strong> le <?php $date = new \Datetime($comment->getCreatedAt()); echo $date->format('d-m-Y à H:i:s'); ?></p>
 	<p><?= nl2br(htmlspecialchars($comment->getContent())) ?></p>
-    <?= var_dump($comment->getId()) ?>
     <a href="?action=comment&id=<?= urlencode($comment->getId()) ?>">Modifier</a>
 <?php
 }

@@ -7,14 +7,14 @@
 
 <h2>Modifier le commentaire</h2>
 
-<form action="index.php?action=updateComment&id=<?= $comment->id ?>" method="post">
+<form action="index.php?action=updateComment&id=<?= $comment->getId() ?>" method="post">
    <div>
   	<label for="title">Titre</label><br />
-  	<input type="text" id="title" name="title" value="<?= $comment->title ?>">
+  	<input type="text" id="title" name="title" value="<?= $comment->getTitle() ?>">
    </div>
    <div>
   	<label for="content">Commentaire</label><br />
-  	<textarea id="content" name="content"><?= $comment->content ?></textarea>
+  	<textarea id="content" name="content"><?= $comment->getContent() ?></textarea>
    </div>
    <div>
   	<input type="submit" />

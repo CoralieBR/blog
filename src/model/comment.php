@@ -1,13 +1,25 @@
 <?php
-namespace Application\Model\Comment;
-// declare(strict_types=1);
+declare(strict_types=1);
+namespace App\Model;
+
 require_once('src/lib/database.php');
 
-
-use Application\Lib\Database\DatabaseConnection;
+use App\Lib\Database;
+use App\Model\Traits\contentTrait;
+use App\Model\Traits\createdAtTrait;
+use App\Model\Traits\idTrait;
+use App\Model\Traits\titleTrait;
 
 class Comment
 {
+	use idTrait;
+	use titleTrait;
+	use contentTrait;
+	use createdAtTrait;
+
+	private const STATUS_MODERATION_INVALID = 'invalid';
+	private const STATUS_MODERATION_VALID = 'valid';
+
 	private int $id;
 	private string $title;
 	private string $content;
@@ -84,6 +96,9 @@ class Comment
 
 	public function setModerationStatus($moderationStatus)
 	{
+		if (!in_array($moderationStatus, [self::STATUS_MODERATION_INVALID, self::STATUS_MODERATION_VALID])) {
+			trigger_error(sprintf('Le status %s n\'est pas valide. Les status possibles sont : %s', $moderationStatus, implode(', ', [self::STATUS_MODERATION_INVALID, self::STATUS_MODERATION_VALID])), E_USER_ERROR);
+		}
 		$this->moderationStatus = $moderationStatus;
 
 		return $this;
@@ -116,7 +131,7 @@ class Comment
 
 class CommentRepository
 {
-	public DatabaseConnection $connection;
+	public Database $connection;
 	
 	public function getComments($post)
 	{
@@ -140,7 +155,7 @@ class CommentRepository
 	public function getComment(int $commentId): Comment
 	{
 		$statement = $this->connection->getConnection()->prepare(
-			"SELECT * FROM comment WHERE id - ?"
+			"SELECT * FROM comment WHERE id = ?"
 		);
 		$statement->execute([$commentId]);
 		
