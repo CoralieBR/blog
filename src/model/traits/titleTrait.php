@@ -2,7 +2,7 @@
 
 namespace App\Model\Traits;
 
-trait titleTrait 
+trait TitleTrait 
 {
     private string $title;
 

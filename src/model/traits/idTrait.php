@@ -2,7 +2,7 @@
 
 namespace App\Model\Traits;
 
-trait idTrait 
+trait IdTrait 
 {
     private int $id;
 

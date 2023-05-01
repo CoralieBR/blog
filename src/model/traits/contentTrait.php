@@ -2,7 +2,7 @@
 
 namespace App\Model\Traits;
 
-trait contentTrait 
+trait ContentTrait 
 {
     private string $content;
 

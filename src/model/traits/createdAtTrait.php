@@ -2,7 +2,7 @@
 
 namespace App\Model\Traits;
 
-trait createdAtTrait 
+trait CreatedAtTrait 
 {
     private $createdAt;
 
