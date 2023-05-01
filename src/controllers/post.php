@@ -29,7 +29,6 @@ class Post
         $commentRepository = new CommentRepository();
         $commentRepository->connection = $connection;
         $comments = $commentRepository->getComments($id);
-
         require('templates/post.php');
     }
 }
