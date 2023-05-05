@@ -5,51 +5,51 @@ require_once 'vendor/autoload.php';
 $loader = new \Twig\Loader\FilesystemLoader('src/templates');
 $twig = new \Twig\Environment($loader);
 
-use App\Controllers\AddComment;
-use App\Controllers\UpdateComment;
-use App\Controllers\Summary;
-use App\Controllers\Post;
-use App\Controllers\Comment;
+use App\Controllers\AddCommentController;
+use App\Controllers\UpdateCommentController;
+use App\Controllers\SummaryController;
+use App\Controllers\PostController;
+use App\Controllers\CommentController;
 
 try {
 	if (isset($_GET['action']) && $_GET['action'] !== '') {
-    	if ($_GET['action'] === 'post') {
-        	if (isset($_GET['id']) && $_GET['id'] > 0) {
-            	$id = intval($_GET['id']);
-
-				(new Post())->execute($id, $twig);
-        	} else {
-            	throw new Exception('Aucun identifiant de billet envoyé');
-        	}
-    	} elseif ($_GET['action'] === 'comment') {
+		if ($_GET['action'] === 'post') {
 			if (isset($_GET['id']) && $_GET['id'] > 0) {
-            	$id = intval($_GET['id']);
+				$id = intval($_GET['id']);
 
-				(new Comment())->execute($id, $twig);
-        	} else {
-            	throw new Exception('Aucun identifiant de commentaire envoyé');
-        	}
+				(new PostController())->execute($id, $twig);
+			} else {
+				throw new Exception('Aucun identifiant de billet envoyé');
+			}
+		} elseif ($_GET['action'] === 'comment') {
+			if (isset($_GET['id']) && $_GET['id'] > 0) {
+				$id = intval($_GET['id']);
+
+				(new CommentController())->execute($id, $twig);
+			} else {
+				throw new Exception('Aucun identifiant de commentaire envoyé');
+			}
 		} elseif ($_GET['action'] === 'addComment') {
-        	if (isset($_GET['id']) && $_GET['id'] > 0) {
-            	$id = intval($_GET['id']);
+			if (isset($_GET['id']) && $_GET['id'] > 0) {
+				$id = intval($_GET['id']);
 
-				(new AddComment())->execute($id, $_POST);
-        	} else {
-            	throw new Exception('Aucun identifiant de billet envoyé');
-        	}
+				(new AddCommentController())->execute($id, $_POST);
+			} else {
+				throw new Exception('Aucun identifiant de billet envoyé');
+			}
 		} elseif ($_GET['action'] === 'updateComment') {
 			if (isset($_GET['id']) && $_GET['id'] > 0) {
-            	$id = intval($_GET['id']);
+				$id = intval($_GET['id']);
 
-				(new UpdateComment())->execute($id, $_POST);
-        	} else {
-            	throw new Exception('Aucun identifiant de commentaire envoyé');
-        	}
-    	} else {
-        	throw new Exception("La page que vous recherchez n'existe pas.");
-    	}
+				(new UpdateCommentController())->execute($id, $_POST);
+			} else {
+				throw new Exception('Aucun identifiant de commentaire envoyé');
+			}
+		} else {
+			throw new Exception("La page que vous recherchez n'existe pas.");
+		}
 	} else {
-		(new Summary())->execute($twig);
+		(new SummaryController())->execute($twig);
 	}
 } catch (Exception $e) {
 	$errorMessage = $e->getMessage();

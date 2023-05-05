@@ -3,9 +3,9 @@
 namespace App\Controllers;
 
 use App\Lib\Database;
-use App\Model\PostRepository;
+use App\Repository\PostRepository;
 
-class Summary
+class SummaryController
 {
     public function execute($twig)
     {

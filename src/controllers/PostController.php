@@ -3,10 +3,10 @@
 namespace App\Controllers;
 
 use App\Lib\Database;
-use App\Model\CommentRepository;
-use App\Model\PostRepository;
+use App\Repository\CommentRepository;
+use App\Repository\PostRepository;
 
-class Post
+class PostController
 {
     public function execute(int $id, $twig)
     {

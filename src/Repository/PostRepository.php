@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
-namespace App\Model;
+namespace App\Repository;
 
 use App\Lib\Database;
-use App\Model\Post;
+use App\Entity\Post;
 
 class PostRepository
 {
