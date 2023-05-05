@@ -7,7 +7,7 @@ use App\Model\CommentRepository;
 
 class Comment
 {
-    public function execute(int $id)
+    public function execute(int $id, $twig)
     {
         $connection = new Database();
 
@@ -15,7 +15,7 @@ class Comment
         $commentRepository->connection = $connection;
         $comment = $commentRepository->getComment($id);
     
-        require('templates/updateComment.php');
+        echo $twig->render('post.html.twig', ['comment' => $comment]);
     }
 }
 

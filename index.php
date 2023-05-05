@@ -1,13 +1,13 @@
 <?php
 
-spl_autoload_register(function($fqcn){
-	$path = str_replace(['App', '\\'], ['src', '/'], $fqcn) . '.php';
-	require $path;
-});
+require_once 'vendor/autoload.php';
+
+$loader = new \Twig\Loader\FilesystemLoader('src/templates');
+$twig = new \Twig\Environment($loader);
 
 use App\Controllers\AddComment;
 use App\Controllers\UpdateComment;
-use App\Controllers\Homepage;
+use App\Controllers\Summary;
 use App\Controllers\Post;
 use App\Controllers\Comment;
 
@@ -17,7 +17,7 @@ try {
         	if (isset($_GET['id']) && $_GET['id'] > 0) {
             	$id = intval($_GET['id']);
 
-				(new Post())->execute($id);
+				(new Post())->execute($id, $twig);
         	} else {
             	throw new Exception('Aucun identifiant de billet envoyé');
         	}
@@ -25,7 +25,7 @@ try {
 			if (isset($_GET['id']) && $_GET['id'] > 0) {
             	$id = intval($_GET['id']);
 
-				(new Comment())->execute($id);
+				(new Comment())->execute($id, $twig);
         	} else {
             	throw new Exception('Aucun identifiant de commentaire envoyé');
         	}
@@ -49,10 +49,10 @@ try {
         	throw new Exception("La page que vous recherchez n'existe pas.");
     	}
 	} else {
-		(new Homepage())->execute();
+		(new Summary())->execute($twig);
 	}
 } catch (Exception $e) {
 	$errorMessage = $e->getMessage();
 	
-	require('templates/error.php');
+	echo $twig->render('error.html.twig', ['errorMessage' => $errorMessage]);
 }

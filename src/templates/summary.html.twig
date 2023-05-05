@@ -1,0 +1,22 @@
+{% extends "layout.html.twig" %}
+
+{% set pageTitle = "Sommaire du blog" %}
+
+{% block body %}
+<h1>Le super blog de Coralie</h1>
+<p>Derniers billets du blog :</p>
+	<div class="row">
+		{% for post in posts %}
+		<div class="col-12 col-sm-6 col-md-4 col-lg-3">
+			<div class="card">
+				<img src="..." class="card-img-top" alt="...">
+				<div class="card-body">
+					<h5 class="card-title">{{ post.title }}</h5>
+					<p class="card-text">{{ post.content }}</p>
+					<a href="?action=post&id={{ post.id|json_encode }}" class="btn btn-primary">Go somewhere</a>
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+{% endblock %}

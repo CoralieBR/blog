@@ -8,7 +8,7 @@ use App\Model\PostRepository;
 
 class Post
 {
-    public function execute(int $id)
+    public function execute(int $id, $twig)
     {
         $connection = new Database();
 
@@ -19,7 +19,10 @@ class Post
         $commentRepository = new CommentRepository();
         $commentRepository->connection = $connection;
         $comments = $commentRepository->getComments($id);
-        require('templates/post.php');
+        echo $twig->render('post.html.twig', [
+            'post' => $post,
+            'comments' => $comments
+        ]);
     }
 }
 
