@@ -1,0 +1,22 @@
+{% extends "layout.html.twig" %}
+
+{% set pageTitle = 'La paaaage d\'accueil' %}
+
+{% block body %}
+<h1>Le super blog de Coralie</h1>
+<p>Derniers billets du blog :</p>
+
+	{% for post in posts %}
+	<div class="news">
+		<h3>
+			{{ post.title }}
+		</h3>
+		<p>
+			{{ post.content }}
+			<br />
+		</p>
+		<em><a href="?action=post&id={{ post.id|json_encode }}">Voir plus</a></em>
+	</div>
+	{% endfor %}
+
+{% endblock %}
