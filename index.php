@@ -6,6 +6,7 @@ use App\Controllers\AddCommentController;
 use App\Controllers\UpdateCommentController;
 use App\Controllers\PostController;
 use App\Controllers\CommentController;
+use App\Controllers\HomeController;
 use App\Lib\Database;
 use App\Repository\CommentRepository;
 use App\Repository\PostRepository;
@@ -21,12 +22,15 @@ $postRepository->connection = $connection;
 $commentRepository = new CommentRepository();
 $commentRepository->connection = $connection;
 
-$postController = new PostController($twig, $postRepository, $commentRepository);
+$homeController = new HomeController($twig);
 $commentController = new CommentController($twig, $commentRepository);
+$postController = new PostController($twig, $postRepository, $commentRepository);
 
 try {
 	if (isset($_GET['action']) && $_GET['action'] !== '') {
-		if ($_GET['action'] === 'post') {
+		if ($_GET['action'] === 'summary') {
+			$postController->list();
+		} elseif ($_GET['action'] === 'post') {
 			if (isset($_GET['id']) && $_GET['id'] > 0) {
 				$id = intval($_GET['id']);
 				$postController->show($id);
@@ -60,7 +64,7 @@ try {
 			throw new Exception("La page que vous recherchez n'existe pas.");
 		}
 	} else {
-		$postController->list();
+		$homeController->homepage();
 	}
 } catch (Exception $e) {
 	$errorMessage = $e->getMessage();
