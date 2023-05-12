@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Lib\Database;
+use App\Entity\Comment;
 use App\Repository\CommentRepository;
 
 class CommentController extends AbstractController
@@ -15,45 +15,50 @@ class CommentController extends AbstractController
         $this->commentRepository = $commentRepository;
     }
 
-    public function show(int $id)
-    {
-        $comment = $this->commentRepository->getComment($id);
-    
-        echo $this->twig->render('post.html.twig', ['comment' => $comment]);
-    }
-
     public function add(int $post, array $input)
 	{
-		$title = null;
-		$content = null;
+        $comment = new Comment();
 		if (!empty($input['title']) && !empty($input['content'])) {
-			$title = $input['title'];
-			$content = $input['content'];
+			if (is_string($input['title'])) {
+                $comment->setTitle($input['title']);
+            }
+			if (is_string($input['content'])) {
+                $comment->setContent($input['content']);
+            }
+            $comment->setPost($post);
 		} else {
 			die('Les données du formulaire sont invalides.');
 		}
 
-		$commentRepository = new CommentRepository();
-		$commentRepository->connection = new Database();
-		$success = $commentRepository->createComment($post, $title, $content);
+		$success = $this->commentRepository->createComment($comment);
+
 		if (!$success) {
 			throw new \Exception('Impossible d\'ajouter le commentaire!');
 		} else {
-			header('Location: index.php?action=post&id=' . $post);
+			header('Location: ?action=post&id=' . $post);
 		}
 	}
 
     public function update(int $commentId, array $input)
 	{
-		$commentRepository = new CommentRepository();
-		$commentRepository->connection = new Database();
+		$comment = $this->commentRepository->getComment($commentId);
+        if (empty($comment)) {
+            header("Location: /blog");
+        }
 
-		$comment = $commentRepository->getComment($commentId);
+        if (empty($input)) {
+            echo $this->twig->render('updateComment.html.twig', ['comment' => $comment]);
+            return;
+        }
 
-		$title = $input['title'] ?? $comment->getTitle();
-		$content = $input['content'] ?? $comment->getContent();
+        if (!empty($input['title']) && is_string($input['title'])) {
+            $comment->setTitle($input['title']);
+        }
+        if (!empty($input['content']) && is_string($input['content'])) {
+            $comment->setContent($input['content']);
+        }
 
-		$success = $commentRepository->updateComment($commentId, $title, $content);
+		$success = $this->commentRepository->updateComment($comment);
 		if (!$success) {
 			throw new \Exception('Impossible de modifier le commentaire!');
 		} else {

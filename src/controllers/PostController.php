@@ -57,5 +57,31 @@ class PostController extends AbstractController
             header("Location: /blog");
         }
     }
+
+    public function update(int $id, array $input)
+    {
+        $post = $this->postRepository->getPost($id);
+        if (empty($post)) {
+            header("Location: /blog");
+        }
+        if (empty($input)) {
+            echo $this->twig->render('updatePost.html.twig', ['post' => $post]);
+            return;
+        } else {
+            if (is_string($input['title'])) {
+                $post->setTitle($input['title']);
+            }
+            if (is_string($input['introduction'])) {
+                $post->setIntroduction($input['introduction']);
+            }
+            if (is_string($input['content'])) {
+                $post->setContent($input['content']);
+            }
+
+            $this->postRepository->updatePost($post);
+
+            header("Location: /blog");
+        }
+    }
 }
 

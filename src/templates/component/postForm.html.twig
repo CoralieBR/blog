@@ -1,0 +1,17 @@
+<form action="?action={{ action }}" method="post" class="my-4">
+    <div class="form-floating mb-3">
+        <input class="form-control" type="text" name="title" id="title" placeholder="titre" value="{{ post.title|default(null) }}">
+        <label for="title">Titre</label>
+    </div>
+    <div class="form-floating mb-3">
+        <textarea class="form-control" placeholder="Introduction" name="introduction" id="introduction">{{ post.introduction|default(null) }}</textarea>
+        <label for="introduction">Introduction</label>
+    </div>
+    <div class="form-floating mb-3">
+        <textarea class="form-control" placeholder="Contenu" name="content" id="content" style="height: 200px">{{ post.content|default(null) }}</textarea>
+        <label for="content">Contenu</label>
+    </div>
+    <div>
+        <input class="btn btn-primary" type="submit" />
+    </div>
+</form>

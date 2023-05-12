@@ -29,20 +29,16 @@ try {
 		if ($_GET['action'] === 'post') {
 			if (isset($_GET['id']) && $_GET['id'] > 0) {
 				$id = intval($_GET['id']);
-
 				$postController->show($id);
 			} else {
 				throw new Exception('Aucun identifiant de billet envoyé');
 			}
 		} elseif ($_GET['action'] === 'addPost') {
 			$postController->add($_POST);
-		} elseif ($_GET['action'] === 'comment') {
+		} elseif ($_GET['action'] === 'updatePost') {
 			if (isset($_GET['id']) && $_GET['id'] > 0) {
 				$id = intval($_GET['id']);
-
-				$commentController->show($id, $twig);
-			} else {
-				throw new Exception('Aucun identifiant de commentaire envoyé');
+				$postController->update($id, $_POST);
 			}
 		} elseif ($_GET['action'] === 'addComment') {
 			if (isset($_GET['id']) && $_GET['id'] > 0) {
@@ -56,7 +52,7 @@ try {
 			if (isset($_GET['id']) && $_GET['id'] > 0) {
 				$id = intval($_GET['id']);
 
-				$commentController	->update($id, $_POST);
+				$commentController->update($id, $_POST);
 			} else {
 				throw new Exception('Aucun identifiant de commentaire envoyé');
 			}

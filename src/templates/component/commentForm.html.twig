@@ -1,0 +1,13 @@
+<form action="?action={{ action }}" method="post">
+    <div>
+        <label for="title">Titre</label><br />
+        <input type="text" id="title" name="title" value="{{ comment.title|default(null) }}">
+    </div>
+    <div>
+        <label for="content">Commentaire</label><br />
+        <textarea id="content" name="content">{{ comment.content|default(null) }}</textarea>
+    </div>
+    <div>
+        <input type="submit" />
+    </div>
+</form>

@@ -58,8 +58,7 @@ class PostRepository
 
     public function createPost(Post $post): bool
     {
-        $connection = new Database();
-        $statement = $connection->getConnection()->prepare(
+        $statement = $this->connection->getConnection()->prepare(
             'INSERT INTO post(
                 title,
                 introduction,
@@ -71,6 +70,26 @@ class PostRepository
             $post->getTitle(),
             $post->getIntroduction(),
             $post->getContent()
+        ]);
+
+        return ($affectedLines > 0);
+    }
+
+    public function updatePost(Post $post): bool
+    {
+        $statement = $this->connection->getConnection()->prepare(
+            'UPDATE post SET
+            title = ?,
+            introduction = ?,
+            content = ?,
+            updated_at = NOW()
+            WHERE id = ?'
+        );
+        $affectedLines = $statement->execute([
+            $post->getTitle(),
+            $post->getIntroduction(),
+            $post->getContent(),
+            $post->getId()
         ]);
 
         return ($affectedLines > 0);

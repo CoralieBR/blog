@@ -1,0 +1,10 @@
+{% extends "layout.html.twig" %}
+
+{% set pageTitle = 'Modifier un article' %}
+
+{% block body %}
+
+<h1>Modifier l'article "{{ post.title }}"</h1>
+{% include "component/postForm.html.twig" with { action = 'updatePost&id=' ~ post.id|json_encode } %}
+
+{% endblock %}
