@@ -2,17 +2,17 @@
 declare(strict_types=1);
 namespace App\Entity;
 
-use App\Entity\Traits\contentTrait;
-use App\Entity\Traits\createdAtTrait;
-use App\Entity\Traits\idTrait;
-use App\Entity\Traits\titleTrait;
+use App\Entity\Traits\ContentTrait;
+use App\Entity\Traits\CreatedAtTrait;
+use App\Entity\Traits\IdTrait;
+use App\Entity\Traits\TitleTrait;
 
 class Comment
 {
-	use idTrait;
-	use titleTrait;
-	use contentTrait;
-	use createdAtTrait;
+	use IdTrait;
+	use TitleTrait;
+	use ContentTrait;
+	use CreatedAtTrait;
 
 	private const STATUS_MODERATION_INVALID = 'invalid';
 	private const STATUS_MODERATION_VALID = 'valid';

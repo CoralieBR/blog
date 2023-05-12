@@ -21,6 +21,7 @@ class CommentRepository
 			$comment->setId($row['id']);
 			$comment->setTitle($row['title']);
 			$comment->setContent($row['content']);
+			$comment->setCreatedAt(new \DateTime($row['created_at']));
 			$comments[] = $comment;
 		}
 	
@@ -40,6 +41,7 @@ class CommentRepository
 		$comment->setTitle($row['title']);
 		$comment->setContent($row['content']);
 		$comment->setPost($row['post_id']);
+        $comment->setCreatedAt(new \DateTime($row['created_at']));
 
 		return $comment;
 	}

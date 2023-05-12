@@ -18,7 +18,15 @@ class PostRepository
         $post = new Post();
         $post->setId($row['id']);
         $post->setTitle($row['title']);
+        $post->setIntroduction($row['introduction']);
         $post->setContent($row['content']);
+        $post->setCreatedAt(new \DateTime($row['created_at']));
+        if (empty($row['updated_at'])) {
+            $post->setUpdatedAt(null);
+        } else {
+            $post->setUpdatedAt(new \DateTime($row['updated_at']));
+        }
+        // $post->setAuthor($row['author']);
 
         return $post;
     }
@@ -34,13 +42,37 @@ class PostRepository
             $post->setTitle($row['title']);
             $post->setIntroduction($row['introduction']);
             $post->setContent($row['content']);
-            $post->setCreatedAt($row['created_at']);
-            $post->setUpdatedAt($row['updated_at']);
+            if ($row['created_at']) {
+                $post->setCreatedAt(new \DateTime($row['created_at']));
+            }
+            if ($row['updated_at']) {
+                $post->setUpdatedAt(new \DateTime($row['updated_at']));
+            }
             // $post->setAuthor($row['author']);
     
             $posts[] = $post;
         }
     
         return $posts;
+    }
+
+    public function createPost(Post $post): bool
+    {
+        $connection = new Database();
+        $statement = $connection->getConnection()->prepare(
+            'INSERT INTO post(
+                title,
+                introduction,
+                content,
+                created_at
+            ) VALUES (?, ?, ?, NOW())'
+        );
+        $affectedLines = $statement->execute([
+            $post->getTitle(),
+            $post->getIntroduction(),
+            $post->getContent()
+        ]);
+
+        return ($affectedLines > 0);
     }
 }

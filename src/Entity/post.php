@@ -2,51 +2,52 @@
 declare(strict_types=1);
 namespace App\Entity;
 
-use App\Entity\Traits\contentTrait;
-use App\Entity\Traits\createdAtTrait;
-use App\Entity\Traits\idTrait;
-use App\Entity\Traits\titleTrait;
+use App\Entity\Traits\ContentTrait;
+use App\Entity\Traits\CreatedAtTrait;
+use App\Entity\Traits\IdTrait;
+use App\Entity\Traits\TitleTrait;
 
 class Post
 {
-	use idTrait;
-	use titleTrait;
-	use contentTrait;
-	use createdAtTrait;
-    private string $introduction;
-    private $updatedAt;
-	private int $author;
+	use IdTrait;
+	use TitleTrait;
+	use ContentTrait;
+	use CreatedAtTrait;
 
-	public function getIntroduction()
+	private ?string $introduction;
+    private ?\DateTime $updatedAt;
+	private ?int $author;
+
+	public function getIntroduction(): ?string
 	{
 		return $this->introduction;
 	}
 
-	public function setIntroduction($introduction)
+	public function setIntroduction(?string $introduction): self
 	{
 		$this->introduction = $introduction;
 
 		return $this;
 	}
 
-	public function getUpdatedAt()
+	public function getUpdatedAt(): ?\DateTime
 	{
 		return $this->updatedAt;
 	}
 
-	public function setUpdatedAt($updatedAt)
+	public function setUpdatedAt(?\DateTime $updatedAt): self
 	{
 		$this->updatedAt = $updatedAt;
 
 		return $this;
 	}
 
-	public function getAuthor()
+	public function getAuthor(): int
 	{
 		return $this->author;
 	}
 
-	public function setAuthor($author)
+	public function setAuthor(?int $author): self
 	{
 		$this->author = $author;
 
