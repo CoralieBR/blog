@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\Traits;
+namespace App\Entity\Traits;
 
 trait CreatedAtTrait 
 {

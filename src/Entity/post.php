@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
-namespace App\Model;
+namespace App\Entity;
 
-use App\Model\Traits\contentTrait;
-use App\Model\Traits\createdAtTrait;
-use App\Model\Traits\idTrait;
-use App\Model\Traits\titleTrait;
+use App\Entity\Traits\contentTrait;
+use App\Entity\Traits\createdAtTrait;
+use App\Entity\Traits\idTrait;
+use App\Entity\Traits\titleTrait;
 
 class Post
 {

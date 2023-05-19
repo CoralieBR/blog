@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
-namespace App\Model;
+namespace App\Repository;
 
 use App\Lib\Database;
-use App\Model\Post;
+use App\Entity\Post;
 
 class PostRepository
 {
@@ -32,7 +32,11 @@ class PostRepository
             $post = new Post();
             $post->setId($row['id']);
             $post->setTitle($row['title']);
+            $post->setIntroduction($row['introduction']);
             $post->setContent($row['content']);
+            $post->setCreatedAt($row['created_at']);
+            $post->setUpdatedAt($row['updated_at']);
+            // $post->setAuthor($row['author']);
     
             $posts[] = $post;
         }

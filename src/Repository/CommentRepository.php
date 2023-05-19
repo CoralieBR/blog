@@ -1,8 +1,8 @@
 <?php
-namespace App\Model;
+namespace App\Repository;
 
 use App\Lib\Database;
-use App\Model\Comment;
+use App\Entity\Comment;
 
 class CommentRepository
 {

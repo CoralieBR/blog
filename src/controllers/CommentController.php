@@ -3,9 +3,9 @@
 namespace App\Controllers;
 
 use App\Lib\Database;
-use App\Model\CommentRepository;
+use App\Repository\CommentRepository;
 
-class Comment
+class CommentController
 {
     public function execute(int $id, $twig)
     {

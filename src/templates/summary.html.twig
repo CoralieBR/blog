@@ -8,12 +8,11 @@
 	<div class="row">
 		{% for post in posts %}
 		<div class="col-12 col-sm-6 col-md-4 col-lg-3">
-			<div class="card">
-				<img src="..." class="card-img-top" alt="...">
+			<div class="card m-3">
 				<div class="card-body">
 					<h5 class="card-title">{{ post.title }}</h5>
-					<p class="card-text">{{ post.content }}</p>
-					<a href="?action=post&id={{ post.id|json_encode }}" class="btn btn-primary">Go somewhere</a>
+					<p class="card-text">{{ post.introduction|default('...') }}</p>
+					<a href="?action=post&id={{ post.id|json_encode }}" class="btn btn-primary">Lire plus</a>
 				</div>
 			</div>
 		</div>
