@@ -67,21 +67,20 @@ class PostController extends AbstractController
         if (empty($input)) {
             echo $this->twig->render('updatePost.html.twig', ['post' => $post]);
             return;
-        } else {
-            if (is_string($input['title'])) {
-                $post->setTitle($input['title']);
-            }
-            if (is_string($input['introduction'])) {
-                $post->setIntroduction($input['introduction']);
-            }
-            if (is_string($input['content'])) {
-                $post->setContent($input['content']);
-            }
-
-            $this->postRepository->updatePost($post);
-
-            header("Location: /blog");
+        
+        if (is_string($input['title'])) {
+            $post->setTitle($input['title']);
         }
+        if (is_string($input['introduction'])) {
+            $post->setIntroduction($input['introduction']);
+        }
+        if (is_string($input['content'])) {
+            $post->setContent($input['content']);
+        }
+
+        $this->postRepository->updatePost($post);
+
+        header("Location: /blog");
     }
 }
 

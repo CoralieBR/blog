@@ -8,7 +8,7 @@ class CommentRepository
 {
 	public Database $connection;
 	
-	public function getComments($post)
+	public function getComments($post): array
 	{
 		$statement = $this->connection->getConnection()->prepare(
 			"SELECT * FROM comment WHERE post_id = ?"

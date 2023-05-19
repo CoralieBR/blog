@@ -36,7 +36,7 @@ class PostRepository
         $statement = $this->connection->getConnection()->query('SELECT * FROM post');
 
         $posts = [];
-        while (($row = $statement->fetch())) {
+        while ($row = $statement->fetch()) {
             $post = new Post();
             $post->setId($row['id']);
             $post->setTitle($row['title']);
