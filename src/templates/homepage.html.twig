@@ -3,8 +3,29 @@
 {% set pageTitle = 'La paaaage d\'accueil' %}
 
 {% block body %}
-<h1>Le super blog de Coralie</h1>
-<p>Je sui Coralie et j'ai tout plein de choses incroyables à dire. La chaleur du soleil, mon nez qui rougit sous sa brulure lente et perfide, la poussière soulevée par les voitures tonitruantes et malodorantes.</p>
+<h1>Le blog de Coralie Burtin</h1>
+<p>Je suis Coralie et j'ai tout plein de choses incroyables à dire. La chaleur du soleil, mon nez qui rougit sous sa brulure lente et perfide, la poussière soulevée par les voitures tonitruantes et malodorantes.</p>
+
+<div class="">
+    <h2>Ecris-moi</h2>
+    <form action="/blog/contact" method="post">
+        <div class="form-floating mb-3">
+            <input type="email" class="form-control" id="email" placeholder="email">
+            <label for="email">Email</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="subject" placeholder="sujet">
+            <label for="subject">Sujet</label>
+        </div>
+        <div class="form-floating mb-3">
+            <textarea class="form-control" placeholder="message" id="message"></textarea>
+            <label for="message">Message</label>
+        </div>
+        <div class="form-floating">
+            <input class="btn btn-warning" type="submit" />
+        </div>
+    </form>
+</div>
 
 
 {% endblock %}

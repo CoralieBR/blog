@@ -4,10 +4,10 @@
 
 {% block body %}
 <h1>Le blog de Coralie</h1>
-<p><a href="?action=summary">Retour à la liste des billets</a></p>
+<p><a href="/blog/tous-les-articles">Retour à la liste des billets</a></p>
 
 <h2>Modifier le commentaire</h2>
 
-{% include "component/commentForm.html.twig" with { action: 'updateComment&id=' ~ comment.id|json_encode } %}
+{% include "component/commentForm.html.twig" with { action: '/blog/commentaire/modifier?id=' ~ comment.id } %}
 
 {% endblock %}

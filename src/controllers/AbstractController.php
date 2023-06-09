@@ -9,4 +9,11 @@ abstract class AbstractController
     ) {
         $this->twig = $twig;
     }
+
+    protected function render(string $view, array $parameters = [])
+    {
+        $parameters['app']['user'] = $_SESSION['user'] ?? null;
+        echo $this->twig->render($view, $parameters);
+        return;
+    }
 }

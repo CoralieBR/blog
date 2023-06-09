@@ -4,16 +4,25 @@
 
 {% block body %}
 <h1>Le super blog de Coralie</h1>
-<a href="?action=addPost" class="btn btn-primary">Ajouter un nouvel article</a>
+
+{% if isAdmin %}
+	<a href="/blog/ajouter-un-article" class="btn btn-warning">Ajouter un nouvel article</a>
+{% endif %}
+
 <p>Derniers billets du blog :</p>
-	<div class="row">
+	<div class="row align-items-stretch">
 		{% for post in posts %}
-		<div class="col-12 col-sm-6 col-md-4 col-lg-3">
-			<div class="card m-3">
+		<div class="col-12 col-md-6 col-lg-4 col-xl-3 p-3">
+			<div class="card m-1 h-100 border-warning shadow">
 				<div class="card-body">
 					<h5 class="card-title">{{ post.title }}</h5>
+					<div class="text-end mb-2">
+						<small><i>Par {{ post.author }} le {{ post.createdAt|date("d/m/Y") }}</i></small>
+					</div>
 					<p class="card-text">{{ post.introduction|default('...') }}</p>
-					<a href="?action=post&id={{ post.id|json_encode }}" class="btn btn-primary">Lire plus</a>
+				</div>
+				<div class="card-footer text-center">
+					<a href="/blog/article?id={{ post.id }}" class="btn btn-warning">Lire plus</a>
 				</div>
 			</div>
 		</div>

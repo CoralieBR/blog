@@ -1,13 +1,13 @@
-<form action="?action={{ action }}" method="post">
-    <div>
+<form action="{{ action }}" method="post">
+    <div class="form-floating">
+        <input class="form-control" type="text" id="title" name="title" value="{{ comment.title|default(null) }}">
         <label for="title">Titre</label><br />
-        <input type="text" id="title" name="title" value="{{ comment.title|default(null) }}">
     </div>
-    <div>
+    <div class="form-floating">
+        <textarea class="form-control" id="content" name="content" placeholder="commentaire">{{ comment.content|default(null) }}</textarea>
         <label for="content">Commentaire</label><br />
-        <textarea id="content" name="content">{{ comment.content|default(null) }}</textarea>
     </div>
-    <div>
-        <input type="submit" />
+    <div class="form-floating">
+        <input class="btn btn-warning" type="submit" />
     </div>
 </form>
