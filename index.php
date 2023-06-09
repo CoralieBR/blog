@@ -2,72 +2,121 @@
 
 require_once 'vendor/autoload.php';
 
-use App\Controllers\AddCommentController;
-use App\Controllers\UpdateCommentController;
+session_start();
+
 use App\Controllers\PostController;
 use App\Controllers\CommentController;
+use App\Controllers\ErrorController;
 use App\Controllers\HomeController;
+use App\Controllers\UserController;
 use App\Lib\Database;
 use App\Repository\CommentRepository;
 use App\Repository\PostRepository;
+use App\Repository\UserRepository;
 
 $loader = new \Twig\Loader\FilesystemLoader('src/templates');
 $twig = new \Twig\Environment($loader);
 
 $connection = new Database();
 
+$userRepository = new UserRepository();
 $postRepository = new PostRepository();
-$postRepository->connection = $connection;
-
 $commentRepository = new CommentRepository();
+
+$userRepository->connection = $connection;
+$userRepository->postRepository = $postRepository;
+$userRepository->commentRepository = $commentRepository;
+
+$postRepository->connection = $connection;
+$postRepository->userRepository = $userRepository;
+$postRepository->commentRepository = $commentRepository;
+
 $commentRepository->connection = $connection;
+$commentRepository->userRepository = $userRepository;
+$commentRepository->postRepository = $postRepository;
 
 $homeController = new HomeController($twig);
-$commentController = new CommentController($twig, $commentRepository);
+$errorController = new ErrorController($twig);
+$commentController = new CommentController($twig, $commentRepository, $postRepository, $errorController);
 $postController = new PostController($twig, $postRepository, $commentRepository);
+$userController = new UserController($twig, $userRepository);
 
+$uri = $_SERVER['REQUEST_URI'];
+$uri = explode('?', $uri)[0];
+$uri = explode('/', $uri);
 try {
-	if (isset($_GET['action']) && $_GET['action'] !== '') {
-		if ($_GET['action'] === 'summary') {
+	switch ($uri[2]) {
+		case '':
+			$homeController->homepage();
+			break;
+		case 'admin':
+			if (isset($_SESSION['user']) && $_SESSION['user']->isAdmin()) {
+				switch ($uri[3]) {
+					case 'articles':
+						$postController->manage();
+						break;
+					case 'commentaires':
+						$commentController->manage();
+						break;
+					case 'moderate-comment':
+						if (isset($_GET['id']) && is_numeric($_GET['id']) && isset($_GET['is-accepted'])) {
+							$commentController->moderate(intval($_GET['id']), boolval($_GET['is-accepted']));
+						}
+						break;
+					case 'utilisateurices':
+						$userController->manage();
+						break;
+				}
+			} else {
+				$errorController->errorPage(403);
+				break;
+			}
+			break;
+		case 'tous-les-articles':
 			$postController->list();
-		} elseif ($_GET['action'] === 'post') {
-			if (isset($_GET['id']) && $_GET['id'] > 0) {
-				$id = intval($_GET['id']);
-				$postController->show($id);
-			} else {
-				throw new Exception('Aucun identifiant de billet envoyé');
-			}
-		} elseif ($_GET['action'] === 'addPost') {
+			break;
+		case 'ajouter-un-article':
 			$postController->add($_POST);
-		} elseif ($_GET['action'] === 'updatePost') {
-			if (isset($_GET['id']) && $_GET['id'] > 0) {
+			break;
+		case 'article':
+			if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 				$id = intval($_GET['id']);
-				$postController->update($id, $_POST);
-			}
-		} elseif ($_GET['action'] === 'addComment') {
-			if (isset($_GET['id']) && $_GET['id'] > 0) {
-				$id = intval($_GET['id']);
-
-				$commentController->add($id, $_POST);
+				if (isset($uri[3]) && $uri[3] = 'modifier') {
+					$postController->update($id, $_POST);
+				} else {
+					$postController->show(intval($id));
+				}
 			} else {
-				throw new Exception('Aucun identifiant de billet envoyé');
+				$errorController->errorPage(null, 'Article introuvable.');
+				break;
 			}
-		} elseif ($_GET['action'] === 'updateComment') {
-			if (isset($_GET['id']) && $_GET['id'] > 0) {
-				$id = intval($_GET['id']);
-
-				$commentController->update($id, $_POST);
-			} else {
-				throw new Exception('Aucun identifiant de commentaire envoyé');
+			break;
+		case 'commentaire':
+			if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+				$id = $_GET['id'];
+				switch ($uri[3]) {
+					case 'ajouter':
+						$commentController->add($id, $_POST);
+						break;
+					case 'modifier':
+						$commentController->update($id, $_POST);
+						break;
+				}
 			}
-		} else {
-			throw new Exception("La page que vous recherchez n'existe pas.");
-		}
-	} else {
-		$homeController->homepage();
+		case 'inscription':
+			$userController->registration($_POST);
+			break;
+		case 'connexion':
+			$userController->login($_POST);
+			break;
+		case 'deconnexion':
+			$userController->logout();
+			break;
+		default:
+			$errorController->errorPage(404);
+			break;
 	}
 } catch (Exception $e) {
 	$errorMessage = $e->getMessage();
-	
-	echo $twig->render('error.html.twig', ['errorMessage' => $errorMessage]);
+	$errorController->errorPage(null, $errorMessage);
 }

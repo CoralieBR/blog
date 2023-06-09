@@ -1,0 +1,33 @@
+{% extends "layout.html.twig" %}
+
+{% block body %}
+{{ errorMessages.name }}
+<form action="/blog/inscription" method="post">
+    <div class="form-floating mb-3">
+        <input class="form-control" type="text" id="name" name="name" placeholder="Nom" value="{{ inputs.name }}" required>
+        <label for="name">Nom *</label>
+        <div class="text-danger">
+            {{ errorMessages.name }}
+        </div>
+    </div>
+    <div class="form-floating mb-3">
+        <input class="form-control" type="text" id="email" name="email" placeholder="Email" value="{{ inputs.email }}" required>
+        <label for="email">Email *</label>
+        <div class="text-danger">
+            {{ errorMessages.email }}
+        </div>
+    </div>
+    <div class="form-floating mb-3">
+        <input class="form-control" type="password" name="password" id="password" placeholder="mot de passe" required>
+        <label for="password">Mot de passe *</label>
+        <div class="text-danger">
+            {{ errorMessages.password }}
+        </div>
+    </div>
+    <div class="form-floating mb-3">
+        <input class="btn btn-warning" type="submit" value="Créer un compte">
+    </div>
+</form>
+
+<a href="/blog/connexion">J'ai déjà un compte</a>
+{% endblock %}

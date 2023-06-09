@@ -1,3 +1,6 @@
+{% set isLogged = app.user ? true : false %}
+{% set isAdmin = isLogged and app.user.status == 'admin' %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,37 +12,51 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <nav class="navbar navbar-expand-lg navbar-light bg-warning shadow mb-5">
         <div class="container-fluid">
             <a class="navbar-brand" href="/blog">Blog</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <ul class="navbar-nav mb-2 mb-lg-0 w-100">
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/blog">Accueil</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="?action=summary">Tous les articles</a>
+                        <a class="nav-link" href="/blog/tous-les-articles">Tous les articles</a>
                     </li>
                     
                     {% if posts is defined and posts|length > 0 %}
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="" role="button" id="morePosts" data-bs-toggle="dropdown" aria-expanded="false">
                             Voir plus
                         </a>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu" aria-labelledby="morePosts">
                             {% for post in posts %}
-                                <li><a class="dropdown-item" href="?action=post&id={{ post.id|json_encode }}">{{ post.title }}</a></li>
+                                <li><a class="dropdown-item" href="/blog/article?id={{ post.id }}">{{ post.title }}</a></li>
                             {% endfor %}
                         </ul>
                     </li>
                     {% endif %}
 
-                    <li class="nav-item ms-auto">
-                        <a class="nav-link">Se connecter</a>
+                    {% if isAdmin %}
+                    <li class="nav-item dropdown ms-auto">
+                        <a href="" class="nav-link dropdown-toggle" role="button" id="adminMenu" data-bs-toggle="dropdown" aria-expanded="false">Menu Admin</a>
+                        <ul class="dropdown-menu" aria-labelledby="adminMenu">
+                            <li><a href="/blog/admin/articles" class="dropdown-item">Gérer les articles</a></li>
+                            <li><a href="/blog/admin/commentaires" class="dropdown-item">Modérer les commentaires</a></li>
+                            <li><a href="/blog/admin/utilisateurices" class="dropdown-item">Voir les utilisateurices</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+
+                    <li class="nav-item">
+                        {% if app.user %}
+                            <a href="/blog/deconnexion" class="nav-link">Se déconnecter</a>
+                        {% else %}
+                            <a href="/blog/connexion" class="nav-link">Se connecter</a>
+                        {% endif %}
                     </li>
                 </ul>
             </div>
