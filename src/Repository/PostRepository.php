@@ -1,56 +1,39 @@
 <?php
-declare(strict_types=1);
+
 namespace App\Repository;
 
-use App\Lib\Database;
 use App\Entity\Post;
+use App\Lib\Database;
+use App\Repository\UserRepository;
 
 class PostRepository
 {
     public Database $connection;
+    public UserRepository $userRepository;
+    public CommentRepository $commentRepository;
 
-    public function getPost(int $id): Post
+    public function find(int $id): Post
     {
-        $statement = $this->connection->getConnection()->prepare('SELECT * FROM post WHERE id = ?');
+        $statement = $this->connection->getConnection()->prepare(
+            'SELECT * FROM post WHERE id = ?'
+        );
         $statement->execute([$id]);
 
         $row = $statement->fetch();
-        $post = new Post();
-        $post->setId($row['id']);
-        $post->setTitle($row['title']);
-        $post->setIntroduction($row['introduction']);
-        $post->setContent($row['content']);
-        $post->setCreatedAt(new \DateTime($row['created_at']));
-        if (empty($row['updated_at'])) {
-            $post->setUpdatedAt(null);
-        } else {
-            $post->setUpdatedAt(new \DateTime($row['updated_at']));
-        }
-        // $post->setAuthor($row['author']);
-
+        $post = $this->getPostInformations($row);
+        
         return $post;
     }
 
-    public function getPosts():array
+    public function getPosts(): array
     {
-        $statement = $this->connection->getConnection()->query('SELECT * FROM post');
+        $statement = $this->connection->getConnection()->query(
+            'SELECT * FROM post'
+        );
 
         $posts = [];
         while ($row = $statement->fetch()) {
-            $post = new Post();
-            $post->setId($row['id']);
-            $post->setTitle($row['title']);
-            $post->setIntroduction($row['introduction']);
-            $post->setContent($row['content']);
-            if ($row['created_at']) {
-                $post->setCreatedAt(new \DateTime($row['created_at']));
-            }
-            if ($row['updated_at']) {
-                $post->setUpdatedAt(new \DateTime($row['updated_at']));
-            }
-            // $post->setAuthor($row['author']);
-    
-            $posts[] = $post;
+            $posts[] = $this->getPostInformations($row);
         }
     
         return $posts;
@@ -93,5 +76,28 @@ class PostRepository
         ]);
 
         return ($affectedLines > 0);
+    }
+
+    private function getPostInformations($row): Post
+    {
+        $post = new Post();
+        $post->setId($row['id']);
+        $post->setTitle($row['title']);
+        $post->setIntroduction($row['introduction']);
+        $post->setContent($row['content']);
+        if (empty($row['created_at'])) {
+            $post->setCreatedAt(null);
+        } else {
+            $post->setCreatedAt(new \DateTime($row['created_at']));
+        }
+        if (empty($row['updated_at'])) {
+            $post->setUpdatedAt(null);
+        } else {
+            $post->setUpdatedAt(new \DateTime($row['updated_at']));
+        }
+        $author = $this->userRepository->find($row['author_id']);
+        $post->setAuthor($author);
+
+        return $post;
     }
 }
