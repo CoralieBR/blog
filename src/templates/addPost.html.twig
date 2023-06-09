@@ -1,0 +1,11 @@
+
+{% extends "layout.html.twig" %}
+
+{% set pageTitle = 'Ajouter un article' %}
+
+{% block body %}
+
+<h1>Créer un nouvel article</h1>
+{% include "component/postForm.html.twig" with { action: 'addPost' } %}
+
+{% endblock %}

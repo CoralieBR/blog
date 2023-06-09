@@ -8,7 +8,7 @@ class CommentRepository
 {
 	public Database $connection;
 	
-	public function getComments($post)
+	public function getComments($post): array
 	{
 		$statement = $this->connection->getConnection()->prepare(
 			"SELECT * FROM comment WHERE post_id = ?"
@@ -21,6 +21,7 @@ class CommentRepository
 			$comment->setId($row['id']);
 			$comment->setTitle($row['title']);
 			$comment->setContent($row['content']);
+			$comment->setCreatedAt(new \DateTime($row['created_at']));
 			$comments[] = $comment;
 		}
 	
@@ -40,21 +41,26 @@ class CommentRepository
 		$comment->setTitle($row['title']);
 		$comment->setContent($row['content']);
 		$comment->setPost($row['post_id']);
+        $comment->setCreatedAt(new \DateTime($row['created_at']));
 
 		return $comment;
 	}
 
-	public function createComment(int $post, string $title, string $content): bool
+	public function createComment(Comment $comment): bool
 	{
 		$statement = $this->connection->getConnection()->prepare(
 			'INSERT INTO comment(post_id, title, content, created_at) VALUES(?, ?, ?, NOW())'
 		);
-		$affectedLines = $statement->execute([$post, $title, $content]);
+		$affectedLines = $statement->execute([
+			$comment->getPost(), 
+			$comment->getTitle(), 
+			$comment->getContent()
+		]);
 	
 		return ($affectedLines > 0);
 	}
 
-	public function updateComment(int $commentId, string $title, string $content): bool
+	public function updateComment(Comment $comment): bool
 	{
 		$statement = $this->connection->getConnection()->prepare(
 			"UPDATE comment
@@ -62,7 +68,11 @@ class CommentRepository
 			content = ?
 			WHERE id = ?"
 		);
-		$affectedLines = $statement->execute([$title, $content, $commentId]);
+		$affectedLines = $statement->execute([
+			$comment->getTitle(), 
+			$comment->getContent(), 
+			$comment->getId()
+		]);
 
 		return ($affectedLines > 0);
 	}

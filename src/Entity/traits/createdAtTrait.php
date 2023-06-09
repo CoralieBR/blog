@@ -4,14 +4,14 @@ namespace App\Entity\Traits;
 
 trait CreatedAtTrait 
 {
-    private $createdAt;
+    private ?\DateTime $createdAt;
 
-	public function getCreatedAt()
+	public function getCreatedAt(): ?\DateTime
 	{
 		return $this->createdAt;
 	}
 
-	public function setCreatedAt($createdAt)
+	public function setCreatedAt(?\DateTime $createdAt): self
 	{
 		$this->createdAt = $createdAt;
 
