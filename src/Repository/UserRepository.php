@@ -37,7 +37,7 @@ class UserRepository
         return $users;
     }
 
-    public function findUserWithEmail($email): User 
+    public function findUserWithEmail($email): ?User 
     {
         $statement = $this->connection->getConnection()->prepare(
             'SELECT * FROM user WHERE email = ?'
@@ -45,6 +45,10 @@ class UserRepository
         $statement->execute([$email]);
 
         $row = $statement->fetch();
+        
+        if (empty($row)) {
+            return null;
+        }
         $user = $this->getUserInformations($row);
 
         return $user;
@@ -57,6 +61,11 @@ class UserRepository
         );
         $statement->execute([$name]);
         $row = $statement->fetch();
+        
+        if (empty($row)) {
+            return null;
+        }
+        
         $user = $this->getUserInformations($row);
         return $user;
     }

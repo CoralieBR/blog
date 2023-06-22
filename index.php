@@ -47,13 +47,16 @@ $uri = explode('/', $uri);
 try {
 	switch ($uri[2]) {
 		case '':
-			$homeController->homepage();
+			$homeController->homepage($_POST);
 			break;
 		case 'admin':
 			if (isset($_SESSION['user']) && $_SESSION['user']->isAdmin()) {
 				switch ($uri[3]) {
 					case 'articles':
 						$postController->manage();
+						break;
+					case 'ajouter-un-article':
+						$postController->addPost($_POST);
 						break;
 					case 'commentaires':
 						$commentController->manage();
@@ -66,6 +69,9 @@ try {
 					case 'utilisateurices':
 						$userController->manage();
 						break;
+					default:
+						$errorController->errorPage(404);
+						break;
 				}
 			} else {
 				$errorController->errorPage(403);
@@ -75,14 +81,11 @@ try {
 		case 'tous-les-articles':
 			$postController->list();
 			break;
-		case 'ajouter-un-article':
-			$postController->add($_POST);
-			break;
 		case 'article':
 			if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 				$id = intval($_GET['id']);
 				if (isset($uri[3]) && $uri[3] = 'modifier') {
-					$postController->update($id, $_POST);
+					$postController->updatePost($id, $_POST);
 				} else {
 					$postController->show(intval($id));
 				}
@@ -96,13 +99,20 @@ try {
 				$id = $_GET['id'];
 				switch ($uri[3]) {
 					case 'ajouter':
-						$commentController->add($id, $_POST);
+						$commentController->addComment($id, $_POST);
 						break;
 					case 'modifier':
-						$commentController->update($id, $_POST);
+						$commentController->updateComment($id, $_POST);
+						break;
+					default:
+						$errorController->errorPage(404);
 						break;
 				}
+			} else {
+				$errorController->errorPage(null, 'Commentaire introuvable.');
+				break;
 			}
+			break;
 		case 'inscription':
 			$userController->registration($_POST);
 			break;

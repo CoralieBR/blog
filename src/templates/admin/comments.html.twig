@@ -26,8 +26,11 @@
                             <a class="btn btn-danger" href="/blog/admin/moderate-comment?id={{ comment.id }}&is-accepted=0">NON</a>
                             <a class="btn btn-success" href="/blog/admin/moderate-comment?id={{ comment.id }}&is-accepted=1">OUI</a>
                         {% else %}
-                            {# {{ comment.isEnabled == false ? 'Non-validé' : 'Validé' }} #}
-                            {{ comment.checkIfEnabled }}
+                            {% if comment.checkIfIsEnabled == true %}
+                                <div class="text-success">Validé</div>
+                            {% else %}
+                                <div class="text-danger">Non-validé</div>
+                            {% endif %}
                         {% endif %}
                     </td>
                     <td>{{ comment.title }}</td>

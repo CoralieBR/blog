@@ -38,7 +38,7 @@ class PostController extends AbstractController
         ]);
     }
 
-    public function add(array $input)
+    public function addPost(array $input)
     {
         if (empty($input)) {
             return $this->render('addPost.html.twig');
@@ -53,6 +53,7 @@ class PostController extends AbstractController
             if (is_string($input['content'])) {
                 $post->setContent($input['content']);
             }
+            $post->setAuthor($_SESSION['user']);
 
             $this->postRepository->createPost($post);
 
@@ -60,7 +61,7 @@ class PostController extends AbstractController
         }
     }
 
-    public function update(int $id, array $input)
+    public function updatePost(int $id, array $input)
     {
         $post = $this->postRepository->find($id);
         if (empty($post)) {
@@ -71,7 +72,7 @@ class PostController extends AbstractController
                 'post' => $post,
             ]);
         }
-        
+
         if (is_string($input['title'])) {
             $post->setTitle($input['title']);
         }
@@ -89,65 +90,10 @@ class PostController extends AbstractController
 
     public function manage()
     {
-        $posts = $this->postRepository->getPosts();
+        $posts = $this->postRepository->getPosts(); 
 
         return $this->render('admin/posts.html.twig', [
             'posts' => $posts,
         ]);
-    }
-
-    public function list()
-    {
-        $posts = $this->postRepository->getPosts();
-
-        echo $this->twig->render('summary.html.twig', ['posts' => $posts]);
-    }
-
-    public function add(array $input)
-    {
-        if (empty($input)) {
-            echo $this->twig->render('addPost.html.twig');
-            return;
-        } else {
-            $post = new Post();
-            if (is_string($input['title'])) {
-                $post->setTitle($input['title']);
-            }
-            if (is_string($input['introduction'])) {
-                $post->setIntroduction($input['introduction']);
-            }
-            if (is_string($input['content'])) {
-                $post->setContent($input['content']);
-            }
-
-            $this->postRepository->createPost($post);
-
-            header("Location: /blog");
-        }
-    }
-
-    public function update(int $id, array $input)
-    {
-        $post = $this->postRepository->getPost($id);
-        if (empty($post)) {
-            header("Location: /blog");
-        }
-        if (empty($input)) {
-            echo $this->twig->render('updatePost.html.twig', ['post' => $post]);
-            return;
-        
-        if (is_string($input['title'])) {
-            $post->setTitle($input['title']);
-        }
-        if (is_string($input['introduction'])) {
-            $post->setIntroduction($input['introduction']);
-        }
-        if (is_string($input['content'])) {
-            $post->setContent($input['content']);
-        }
-
-        $this->postRepository->updatePost($post);
-
-        header("Location: /blog");
     }
 }

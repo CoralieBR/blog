@@ -1,5 +1,10 @@
-{% set isLogged = app.user ? true : false %}
-{% set isAdmin = isLogged and app.user.status == 'admin' %}
+{% set isLogged = app.user is null ? false : true %}
+{% if isLogged %}
+    {% set isAdmin = app.user.status == 'admin' %}
+{% else %}
+    {% set isAdmin = false %}
+{% endif %}
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -40,24 +45,26 @@
                     </li>
                     {% endif %}
 
-                    {% if isAdmin %}
-                    <li class="nav-item dropdown ms-auto">
-                        <a href="" class="nav-link dropdown-toggle" role="button" id="adminMenu" data-bs-toggle="dropdown" aria-expanded="false">Menu Admin</a>
-                        <ul class="dropdown-menu" aria-labelledby="adminMenu">
-                            <li><a href="/blog/admin/articles" class="dropdown-item">Gérer les articles</a></li>
-                            <li><a href="/blog/admin/commentaires" class="dropdown-item">Modérer les commentaires</a></li>
-                            <li><a href="/blog/admin/utilisateurices" class="dropdown-item">Voir les utilisateurices</a></li>
-                        </ul>
-                    </li>
-                    {% endif %}
-
-                    <li class="nav-item">
-                        {% if app.user %}
-                            <a href="/blog/deconnexion" class="nav-link">Se déconnecter</a>
-                        {% else %}
-                            <a href="/blog/connexion" class="nav-link">Se connecter</a>
+                    <div class="ms-auto d-flex">
+                        {% if isAdmin %}
+                        <li class="nav-item dropdown">
+                            <a href="" class="nav-link dropdown-toggle" role="button" id="adminMenu" data-bs-toggle="dropdown" aria-expanded="false">Menu Admin</a>
+                            <ul class="dropdown-menu" aria-labelledby="adminMenu">
+                                <li><a href="/blog/admin/articles" class="dropdown-item">Gérer les articles</a></li>
+                                <li><a href="/blog/admin/commentaires" class="dropdown-item">Modérer les commentaires</a></li>
+                                <li><a href="/blog/admin/utilisateurices" class="dropdown-item">Voir les utilisateurices</a></li>
+                            </ul>
+                        </li>
                         {% endif %}
-                    </li>
+
+                        <li class="nav-item">
+                            {% if app.user %}
+                                <a href="/blog/deconnexion" class="nav-link">Se déconnecter</a>
+                            {% else %}
+                                <a href="/blog/connexion" class="nav-link">Se connecter</a>
+                            {% endif %}
+                        </li>
+                    </div>
                 </ul>
             </div>
         </div>

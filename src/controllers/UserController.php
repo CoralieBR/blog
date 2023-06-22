@@ -27,7 +27,7 @@ class UserController extends AbstractController
         if (is_string($input['email'])) {
             $user = $this->userRepository->findUserWithEmail($input['email']);
             if (!$user) {
-                $user = $this->userRepository->findUserWithName($input['name']);
+                $user = $this->userRepository->findUserWithName($input['email']);
             }
             if (!$user) {
                 $hasError = true;
@@ -94,6 +94,7 @@ class UserController extends AbstractController
             ]);
         }
 
+        $user->setStatus($user::STATUS_USER);
         $this->userRepository->createUser($user);
 
         $_SESSION['user'] = $user;

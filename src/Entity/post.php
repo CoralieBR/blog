@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Traits\ContentTrait;
@@ -14,9 +13,14 @@ class Post
 	use ContentTrait;
 	use CreatedAtTrait;
 
-	private ?string $introduction;
+	private string $introduction;
     private ?\DateTime $updatedAt;
-	private ?int $author;
+	private User $author;
+
+	public function __toString()
+	{
+		return $this->title;
+	}
 
 	public function getIntroduction(): ?string
 	{
@@ -42,12 +46,12 @@ class Post
 		return $this;
 	}
 
-	public function getAuthor(): int
+	public function getAuthor(): User
 	{
 		return $this->author;
 	}
 
-	public function setAuthor(?int $author): self
+	public function setAuthor(User $author): self
 	{
 		$this->author = $author;
 

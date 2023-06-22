@@ -46,13 +46,15 @@ class PostRepository
                 title,
                 introduction,
                 content,
+                author_id,
                 created_at
-            ) VALUES (?, ?, ?, NOW())'
+            ) VALUES (?, ?, ?, ?, NOW())'
         );
         $affectedLines = $statement->execute([
             $post->getTitle(),
             $post->getIntroduction(),
-            $post->getContent()
+            $post->getContent(),
+            $post->getAuthor()->getId()
         ]);
 
         return ($affectedLines > 0);

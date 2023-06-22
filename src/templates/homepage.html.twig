@@ -8,21 +8,21 @@
 
 <div class="">
     <h2>Ecris-moi</h2>
-    <form action="/blog/contact" method="post">
+    <form action="/blog/" method="post">
         <div class="form-floating mb-3">
-            <input type="email" class="form-control" id="email" placeholder="email">
+            <input type="email" name="email" class="form-control" id="email" placeholder="email">
             <label for="email">Email</label>
         </div>
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="subject" placeholder="sujet">
+            <input type="text" name="subject" class="form-control" id="subject" placeholder="sujet">
             <label for="subject">Sujet</label>
         </div>
         <div class="form-floating mb-3">
-            <textarea class="form-control" placeholder="message" id="message"></textarea>
+            <textarea name="message" class="form-control" placeholder="message" id="message"></textarea>
             <label for="message">Message</label>
         </div>
         <div class="form-floating">
-            <input class="btn btn-warning" type="submit" />
+            <input class="btn btn-warning" type="submit">
         </div>
     </form>
 </div>

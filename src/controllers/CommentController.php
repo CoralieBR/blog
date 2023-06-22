@@ -20,7 +20,7 @@ class CommentController extends AbstractController
         $this->errorController = $errorController;
     }
 
-    public function add(int $postId, array $input)
+    public function addComment(int $postId, array $input)
 	{
         $comment = new Comment();
 		if (!empty($input['title']) && !empty($input['content'])) {
@@ -31,6 +31,7 @@ class CommentController extends AbstractController
                 $comment->setContent($input['content']);
             }
             $comment->setPost($this->postRepository->find($postId));
+            $comment->setAuthor($_SESSION['user']);
 		} else {
             $this->errorController->errorPage(null, 'Les données du formulaire sont invalides.');
 		}
@@ -44,7 +45,7 @@ class CommentController extends AbstractController
 		}
 	}
 
-    public function update(int $commentId, array $input)
+    public function updateComment(int $commentId, array $input)
 	{
 		$comment = $this->commentRepository->find($commentId);
         if (empty($comment)) {
@@ -67,7 +68,7 @@ class CommentController extends AbstractController
 		if (!$success) {
 			throw new \Exception('Impossible de modifier le commentaire!');
 		} else {
-			header('Location: /blog/article?id=' . $comment->getPost());
+			header('Location: /blog/article?id=' . $comment->getPost()->getId());
 		}
 	}
 

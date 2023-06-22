@@ -13,7 +13,6 @@
     <small class="text-body-secondary">Un article de {{ post.author }} écrit le {{ post.createdAt|date("d/m/Y") }} {% if post.updatedAt|date("d/m/Y") is not null %} mis à jour le {{ post.updatedAt|date("d/m/Y") }}{% endif %}</small>
     <p>{{ post.content }}</p>
 </div>
-<a href="?action=updatePost&id={{ post.id|json_encode }}">Modifier l'article</a>
 
 {% if isAdmin %}
     <a href="/blog/article/modifier?id={{ post.id }}">Modifier l'article</a>
@@ -28,13 +27,13 @@
         <p>Pour commenter, veuillez vous connecter.</p>
     {% endif %}
 
-    {% if comments|filter(c => c.isEnabled)|length == 0 %}
+    {% if comments|filter(c => c.checkIfIsEnabled == true)|length == 0 %}
         <p>Il n'y a pas de commentaire.</p>
     {% endif %}
     
 
     {% for comment in comments %}
-        {% if comment.isEnabled or app.user.id == comment.author.id %}
+        {% if comment.checkIfIsEnabled == true %}
             <div class="card border-warning mt-3 shadow">
                 <div class="card-header">
                     {{ comment.title }}
@@ -49,8 +48,8 @@
                     </div>
                 {% endif %}
             </div>
-        {% elseif comment.isEnabled == 0 and app.user.id == comment.author.id %}
-            <div class="card border-{{ comment.moderatedAt is null ? 'warning' : 'danger' }} bg-grey mt-3 shadow">
+        {% elseif comment.checkIfIsEnabled == false  and app.user.id == comment.author.id %}
+            <div class="card border-{{ comment.moderatedAt is null ? 'info' : 'danger' }} bg-grey mt-3 shadow">
                 <div class="card-header">
                     {{ comment.title }}
                 </div>

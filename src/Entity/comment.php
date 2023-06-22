@@ -14,61 +14,56 @@ class Comment
 	use ContentTrait;
 	use CreatedAtTrait;
 
-	private const STATUS_MODERATION_INVALID = 'invalid';
-	private const STATUS_MODERATION_VALID = 'valid';
-
-	private $moderatedAt;
+	private ?\Datetime $moderatedAt;
 	private string $moderationStatus;
-	private int $author;
-	private int $post;
+	private User $author;
+	private Post $post;
+	private bool $isEnabled;
 
-	public function getModeratedAt()
+	public function getModeratedAt(): ?\Datetime 
 	{
-		return $this->moderatedAt;
+		return $this->moderatedAt ?? null;
 	}
 
-	public function setModeratedAt($moderatedAt)
+	public function setModeratedAt(?\Datetime $moderatedAt): self
 	{
 		$this->moderatedAt = $moderatedAt;
 
 		return $this;
 	}
 
-	public function getModerationStatus()
-	{
-		return $this->moderationStatus;
-	}
-
-	public function setModerationStatus($moderationStatus)
-	{
-		if (!in_array($moderationStatus, [self::STATUS_MODERATION_INVALID, self::STATUS_MODERATION_VALID])) {
-			trigger_error(sprintf('Le status %s n\'est pas valide. Les status possibles sont : %s', $moderationStatus, implode(', ', [self::STATUS_MODERATION_INVALID, self::STATUS_MODERATION_VALID])), E_USER_ERROR);
-		}
-		$this->moderationStatus = $moderationStatus;
-
-		return $this;
-	}
-
-	public function getAuthor()
+	public function getAuthor(): User
 	{
 		return $this->author;
 	}
 
-	public function setAuthor($author)
+	public function setAuthor(User $author): self
 	{
 		$this->author = $author;
 
 		return $this;
 	}
 
-	public function getPost()
+	public function getPost(): Post
 	{
 		return $this->post;
 	}
 
-	public function setPost($post)
+	public function setPost(Post $post): self
 	{
 		$this->post = $post;
+
+		return $this;
+	}
+
+	public function checkIfIsEnabled(): bool
+	{
+		return $this->isEnabled;
+	}
+
+	public function setEnableStatus(bool $isEnabled): self
+	{
+		$this->isEnabled = $isEnabled;
 
 		return $this;
 	}

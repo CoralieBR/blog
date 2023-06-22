@@ -10,8 +10,11 @@ class HomeController extends AbstractController
         parent::__construct($twig);
     }
 
-    public function homepage()
+    public function homepage($input)
     {
-        return $this->render('homepage.html.twig');
+        if (!empty($input)) {   
+            mail('coralie.burtin@protonmail.com', $input['subject'], $input['message']);
+        }
+        return $this->render('homepage.html.twig'); 
     }
 }

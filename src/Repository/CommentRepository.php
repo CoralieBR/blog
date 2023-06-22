@@ -60,7 +60,7 @@ class CommentRepository
 			) VALUES(?, ?, ?, ?, NOW())'
 		);
 		$affectedLines = $statement->execute([
-			$comment->getPost(), 
+			$comment->getPost()->getId(), 
 			$comment->getTitle(), 
 			$comment->getContent(),
 			$comment->getAuthor()->getId(),
@@ -76,6 +76,8 @@ class CommentRepository
 			SET title = ?,
 			content = ?,
 			author_id = ?,
+			moderated_at = NULL,
+			is_enabled = 0
 			WHERE id = ?"
 		);
 		$affectedLines = $statement->execute([
@@ -97,7 +99,7 @@ class CommentRepository
 			WHERE id = ?"
 		);
 		$affectedLines = $statement->execute([
-			$comment->checkIfEnabled(),
+			$comment->checkIfIsEnabled(),
 			$comment->getId()
 		]);
 
